@@ -25,13 +25,13 @@ class Formation
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $programme = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $objectifs = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $prerequis = null;
 
     #[ORM\Column]
