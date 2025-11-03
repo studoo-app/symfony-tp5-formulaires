@@ -32,6 +32,14 @@ class Inscription
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $commentaireSatisfaction = null;
 
+    #[ORM\ManyToOne(inversedBy: 'inscriptions')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Formation $formation = null;
+
+    #[ORM\ManyToOne(inversedBy: 'inscriptions')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $apprenant = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -105,6 +113,30 @@ class Inscription
     public function setCommentaireSatisfaction(?string $commentaireSatisfaction): static
     {
         $this->commentaireSatisfaction = $commentaireSatisfaction;
+
+        return $this;
+    }
+
+    public function getFormation(): ?Formation
+    {
+        return $this->formation;
+    }
+
+    public function setFormation(?Formation $formation): static
+    {
+        $this->formation = $formation;
+
+        return $this;
+    }
+
+    public function getApprenant(): ?User
+    {
+        return $this->apprenant;
+    }
+
+    public function setApprenant(?User $apprenant): static
+    {
+        $this->apprenant = $apprenant;
 
         return $this;
     }
