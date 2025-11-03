@@ -10,10 +10,19 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[Route('/categorie')]
 final class CategorieController extends AbstractController
 {
+
+
+    public function __construct(
+        private readonly SluggerInterface $slugger,
+    )
+    {
+    }
+
     #[Route(name: 'app_categorie_index', methods: ['GET'])]
     public function index(CategorieRepository $categorieRepository): Response
     {
@@ -30,6 +39,9 @@ final class CategorieController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $categorie->setSlug($this->slugger->slug($categorie->getNom()));
+
             $entityManager->persist($categorie);
             $entityManager->flush();
 
@@ -57,6 +69,7 @@ final class CategorieController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $categorie->setSlug($this->slugger->slug($categorie->getNom()));
             $entityManager->flush();
 
             return $this->redirectToRoute('app_categorie_index', [], Response::HTTP_SEE_OTHER);
