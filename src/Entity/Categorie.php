@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CategorieRepository::class)]
 class Categorie
@@ -17,18 +18,28 @@ class Categorie
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 3, max: 100)]
     private ?string $nom = null;
 
     #[ORM\Column(length: 100)]
     private ?string $slug = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Assert\Length( max: 1000)]
     private ?string $description = null;
 
     #[ORM\Column(length: 7)]
+    #[Assert\NotBlank]
+    #[Assert\Regex(
+        pattern: '/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/',
+        message: 'La couleur doit être au format hexadécimal, par exemple #FF5733 ou #FFF.'
+    )]
     private ?string $couleur = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank]
+    #[Assert\Regex('/^fa-[\w-]+$/')]
     private ?string $icone = null;
 
     /**
