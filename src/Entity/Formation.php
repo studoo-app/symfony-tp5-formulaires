@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: FormationRepository::class)]
 class Formation
@@ -17,15 +18,21 @@ class Formation
     private ?int $id = null;
 
     #[ORM\Column(length: 250)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 10, max: 100)]
     private ?string $titre = null;
 
     #[ORM\Column(length: 250)]
     private ?string $slug = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 50)]
     private ?string $description = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 50)]
     private ?string $programme = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -35,15 +42,26 @@ class Formation
     private ?string $prerequis = null;
 
     #[ORM\Column]
+    #[Assert\NotNull]
+    #[Assert\Positive]
+    #[Assert\Range(min: 1, max: 1000)]
     private ?int $duree = null;
 
     #[ORM\Column(length: 50)]
+    #[Assert\NotBlank]
+    #[Assert\Choice(choices: ['Débutant', 'Intermédiaire', 'Avancé'], message: 'Choisissez un niveau valide.')]
     private ?string $niveau = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
+    #[Assert\NotNull]
+    #[Assert\PositiveOrZero]
+    #[Assert\Range(max: 1000)]
     private ?string $prix = null;
 
     #[ORM\Column]
+    #[Assert\NotNull]
+    #[Assert\Positive]
+    #[Assert\Range(max: 1000)]
     private ?int $capaciteMax = null;
 
     #[ORM\Column(length: 50)]
